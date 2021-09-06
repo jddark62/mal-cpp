@@ -1,42 +1,37 @@
-#include "String.h"
-#include "ReadLine.h"
-
-#include <iostream>
-#include <memory>
-
-String READ(const String& input);
-String EVAL(const String& ast);
-String PRINT(const String& ast);
-String rep(const String& input);
-
-static ReadLine s_readLine("~/.mal-history");
-
-int main(int argc, char* argv[])
-{
-    String prompt = "user> ";
-    String input;
-    while (s_readLine.get(prompt, input)) {
-        std::cout << rep(input) << "\n";
-    }
-    return 0;
-}
-
-String rep(const String& input)
-{
-    return PRINT(EVAL(READ(input)));
-}
-
-String READ(const String& input)
-{
+#include<iostream>
+#include <string>
+#include "linenoise.hpp"
+std::string READ(std::string input) {
     return input;
 }
 
-String EVAL(const String& ast)
-{
-    return ast;
+std::string EVAL(std::string input) {
+    return input;
 }
 
-String PRINT(const String& ast)
-{
-    return ast;
+std::string PRINT(std::string input) {
+    return input;
+}
+
+std::string rep(std::string input) {
+    auto ast = READ(input);
+    auto result = EVAL(ast);
+    return PRINT(result);
+}
+
+int main(){
+    const auto path_history = "history.txt";
+    // Load history (linenoise)
+    linenoise::LoadHistory(path_history);
+    std::string input;
+    for(;;){
+        auto quit = linenoise::Readline("user> ", input);
+        if (quit) {
+            break;
+        }
+        std::cout << rep(input) << std::endl;
+        //adding text to history
+        linenoise::AddHistory(input.c_str());
+    }
+    linenoise::SaveHistory(path_history);
 }

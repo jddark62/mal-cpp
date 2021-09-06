@@ -77,13 +77,13 @@ function evalMal(ast: MalType, env: Env): MalType {
                             env.set(key, evalMal(value, env));
                         }
                         ast = ast.list[2];
-                        continue loop;
+                        continue;
                     }
                     case "do": {
                         const list = ast.list.slice(1, -1);
                         evalAST(new MalList(list), env);
                         ast = ast.list[ast.list.length - 1];
-                        continue loop;
+                        continue;
                     }
                     case "if": {
                         const [, cond, thenExpr, elseExrp] = ast.list;
@@ -101,7 +101,7 @@ function evalMal(ast: MalType, env: Env): MalType {
                         } else {
                             ast = MalNil.instance;
                         }
-                        continue loop;
+                        continue;
                     }
                     case "fn*": {
                         const [, params, bodyAst] = ast.list;
@@ -129,7 +129,7 @@ function evalMal(ast: MalType, env: Env): MalType {
         if (f.ast) {
             ast = f.ast;
             env = f.newEnv(args);
-            continue loop;
+            continue;
         }
 
         return f.func(...args);

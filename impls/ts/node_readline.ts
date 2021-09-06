@@ -42,4 +42,4 @@ export function readline(prompt?: string): string | null {
     }
 
     return line;
-};
+}

@@ -40,7 +40,7 @@ function readline(prompt) {
     }
 
     return line;
-};
+}
 
 //exports.readline = readline
 module.exports = {readline: readline}
